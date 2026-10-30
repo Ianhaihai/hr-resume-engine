@@ -123,6 +123,15 @@ def _mock(system, user):
                 "优化后：作为招聘助理支持秋季校招，独立处理 300+ 份简历初筛，"
                 "协调 20+ 场面试排期，到面准时率达 95%，并用 Excel 搭建候选人跟踪表，"
                 "使团队协同效率提升约 30%。")
+    # 需要 JSON 的评分请求（chat_json 调用，system 里含 "JSON" 或 "score"）：
+    # 必须放在「匹配/诊断」纯文本分支之前，否则会被提前拦截返回非 JSON 导致解析失败
+    if "JSON" in system or "score" in system:
+        return json.dumps({
+            "score": 85,
+            "advantages": ["人力资源相关本科对口", "有校招实习经历", "Excel/飞书技能达标"],
+            "gaps": ["缺少薪酬/员工关系项目经历"],
+            "summary": "综合匹配度高，建议补充员工关系相关项目后优先约面。",
+        }, ensure_ascii=False)
     if "匹配" in system or "诊断" in system:
         return ("【匹配诊断（演示示例）】\n"
                 "综合匹配度：78 / 100\n"

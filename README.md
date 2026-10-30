@@ -57,12 +57,13 @@ AI 在闭环里干"脏活累活"，**人只做最终判断**——这是工具�
 
 ## 四、技术架构（极简、零运维、可零成本运行）
 
-- **语言**：Python（标准库 + `requests`）
+- **语言**：Python（标准库 + `requests` + `streamlit` + `pymupdf`）
 - **AI 能力**：阿里云百炼 / 通义千问（OpenAI 兼容模式），通过 API 调用
 - **运行成本**：使用平台免费额度即可跑通 demo，**无需付费**
 - **架构亮点**：
   - 统一 AI 调用入口 `llm.py`：有 Key 走真实大模型，无 Key 自动降级为"演示模式"，保证流程不中断
   - 所有 AI 调用均要求**结构化 JSON 输出**，便于下游处理
+  - 网页界面 `app.py`（Streamlit）：支持 PDF 上传、多岗位切换、批量初筛、结果导出，贴近真实使用场景
   - 纯本地 + 免费 API，无需数据库、无需服务器
 
 ---
@@ -89,7 +90,7 @@ python3 --version
 安装依赖：
 
 ```bash
-python3 -m pip install requests
+python3 -m pip install requests streamlit pymupdf
 ```
 
 ### 2. 配置大模型 Key
@@ -102,7 +103,20 @@ echo "LLM_API_KEY=sk-你的key" > .env
 
 > ⚠️ `.env` 已被 `.gitignore` 忽略，密钥**不会**被提交到 GitHub。
 
-### 3. 运行
+### 3. 运行（网页界面，推荐）
+
+无需改代码、无需命令行，直接打开浏览器操作：
+
+```bash
+streamlit run app.py
+```
+
+打开终端提示的本地地址（默认 http://localhost:8501），即可：
+- 左侧**粘贴岗位 JD**（或上传多个 JD 文件自由切换岗位）
+- 右侧**批量上传 PDF / TXT 简历**
+- 点「开始匹配初筛」→ AI 自动解析并按匹配度排序，输出初筛名单，可**一键导出 CSV**
+
+### 4. 运行（命令行脚本）
 
 ```bash
 python3 ai_parse.py   # 解析单份简历
@@ -123,10 +137,12 @@ hr-resume-engine/
 ├── .gitignore         # 忽略密钥与缓存
 ├── .env.example       # Key 配置模板
 ├── llm.py             # 统一 AI 调用入口（真实/演示模式切换）
+├── pdf_utils.py       # PDF / TXT 简历读取
 ├── ai_parse.py        # 简历解析
 ├── enrich.py          # 简历丰富（STAR 扩写）
 ├── match.py           # 岗位匹配诊断
 ├── screen.py          # 批量初筛排序
+├── app.py             # 网页界面（Streamlit：上传 PDF + 多岗位匹配）
 └── Data/
     └── samples/       # 脱敏示例简历 + JD（虚构数据）
 ```
