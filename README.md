@@ -108,7 +108,7 @@ echo "LLM_API_KEY=sk-你的key" > .env
 无需改代码、无需命令行，直接打开浏览器操作：
 
 ```bash
-streamlit run app.py
+python3 -m streamlit run app.py
 ```
 
 打开终端提示的本地地址（默认 http://localhost:8501），即可：
@@ -149,7 +149,33 @@ hr-resume-engine/
 
 ---
 
-## 八、写在最后
+## 八、给他人 / 面试官：如何从 GitHub 运行本项目
+
+本项目已开源。任何人获取代码后，按以下步骤即可在本地跑起来：
+
+```bash
+# 1. 获取代码（二选一）
+git clone https://github.com/Ianhaihai/hr-resume-engine.git
+cd hr-resume-engine
+# 或直接下载 ZIP 解压
+
+# 2. 安装依赖（一次性）
+python3 -m pip install -r requirements.txt
+
+# 3.（可选但推荐）配置自己的大模型 Key
+echo "LLM_API_KEY=sk-你的key" > .env
+
+# 4. 启动网页界面
+python3 -m streamlit run app.py
+```
+
+- **没有 Key 也能跑**：未配置 `.env` 时自动进入"演示模式"，可完整体验界面与流程（输出为示例文案），方便快速了解产品形态。
+- **真实 AI 能力需要自己的 Key**：Key 是私有的，不会随仓库分发；请自行在阿里云百炼注册获取免费额度。
+- 启动后浏览器打开 http://localhost:8501，即可上传 PDF 简历、切换岗位 JD、查看匹配排序并导出 CSV。
+
+---
+
+## 九、写在最后
 
 这个项目最初的目的是：**用 AI 解决一个真实的 HR 业务痛点，并把"想法"落地成可运行、可演示、可分享的作品**。
 
