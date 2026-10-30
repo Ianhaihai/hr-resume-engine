@@ -1,0 +1,13 @@
+# 密钥和环境文件（防止 API key 泄露！绝对不能传到 GitHub）
+.env
+*.env
+
+# Python 运行产生的缓存
+__pycache__/
+*.pyc
+
+# macOS 系统文件
+.DS_Store
+
+# 个人学习进度日志（内部用，不进公开仓库）
+项目记录.md
